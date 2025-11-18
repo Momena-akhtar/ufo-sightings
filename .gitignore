@@ -2,3 +2,4 @@
 app/scenes/__pycache__/
 __pycache__/
 data/raw
+data/processed
