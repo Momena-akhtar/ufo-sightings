@@ -122,7 +122,12 @@ def main():
         if button_rect.collidepoint(mouse_pos):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)  # Change cursor to pointer
             if mouse_click[0]:
-                print("BEGIN button clicked!")
+                # Open the 'Night Files' scene in the same window
+                try:
+                    import scenes.night_files as night_files
+                    night_files.run_night_files(screen, size, bundled_font, small_font, background, base_dir)
+                except Exception as e:
+                    print("Failed to open Night Files scene:", e)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Reset cursor
 
