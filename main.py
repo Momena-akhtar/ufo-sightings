@@ -48,6 +48,15 @@ def main():
     credit_rect = credit_base_surf.get_rect(bottomright=(size[0] - 20, size[1] - 20))
     credit_alpha = 0
 
+    # Load button SVG from file
+    button_svg_path = os.path.join(base_dir, "assets", "buttons", "begin-button.svg")
+    import cairosvg
+    button_png = cairosvg.svg2png(url=button_svg_path)
+    import io
+    button_surface = pygame.image.load(io.BytesIO(button_png))
+    button_surface = pygame.transform.scale(button_surface, (220, 70))  # Adjust button size
+    button_rect = button_surface.get_rect(center=(size[0] // 2, size[1] // 2 + 100))
+
     clock = pygame.time.Clock()
     running = True
 
@@ -93,6 +102,15 @@ def main():
             credit_surf = credit_base_surf.copy()
             credit_surf.set_alpha(credit_alpha)
             screen.blit(credit_surf, credit_rect)
+
+        # Draw button
+        screen.blit(button_surface, button_rect)
+
+        # Handle button click
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_click = pygame.mouse.get_pressed()
+        if button_rect.collidepoint(mouse_pos) and mouse_click[0]:
+            print("BEGIN button clicked!")
 
         pygame.display.flip()
         clock.tick(60)
