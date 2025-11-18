@@ -51,15 +51,19 @@ def main():
     # Load generic button SVG from file
     button_svg_path = os.path.join(base_dir, "assets", "buttons", "button.svg")
     import cairosvg
-    button_png = cairosvg.svg2png(url=button_svg_path)
     import io
+
+    # Convert SVG to PNG and load as Pygame surface
+    button_png = cairosvg.svg2png(url=button_svg_path)
     button_surface = pygame.image.load(io.BytesIO(button_png))
-    button_surface = pygame.transform.scale(button_surface, (210, 70))  # Adjust button size
+    button_surface = pygame.transform.scale(button_surface, (180, 60))
     button_rect = button_surface.get_rect(center=(size[0] // 2, size[1] // 2 + 100))
 
-    # Render button text using heading font
+    # button text
     button_text = "BEGIN"
-    button_text_surf = font.render(button_text, True, (255, 255, 255))
+    button_font = pygame.font.Font(bundled_font, 28)
+    button_font.set_bold(True)
+    button_text_surf = button_font.render(button_text, True, (255, 255, 255))
     button_text_rect = button_text_surf.get_rect(center=button_surface.get_rect().center)
     button_surface.blit(button_text_surf, button_text_rect)
 
@@ -112,11 +116,15 @@ def main():
         # Draw button
         screen.blit(button_surface, button_rect)
 
-        # Handle button click
+        # Handle button hover and click
         mouse_pos = pygame.mouse.get_pos()
         mouse_click = pygame.mouse.get_pressed()
-        if button_rect.collidepoint(mouse_pos) and mouse_click[0]:
-            print("BEGIN button clicked!")
+        if button_rect.collidepoint(mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)  # Change cursor to pointer
+            if mouse_click[0]:
+                print("BEGIN button clicked!")
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Reset cursor
 
         pygame.display.flip()
         clock.tick(60)
