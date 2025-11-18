@@ -48,14 +48,20 @@ def main():
     credit_rect = credit_base_surf.get_rect(bottomright=(size[0] - 20, size[1] - 20))
     credit_alpha = 0
 
-    # Load button SVG from file
-    button_svg_path = os.path.join(base_dir, "assets", "buttons", "begin-button.svg")
+    # Load generic button SVG from file
+    button_svg_path = os.path.join(base_dir, "assets", "buttons", "button.svg")
     import cairosvg
     button_png = cairosvg.svg2png(url=button_svg_path)
     import io
     button_surface = pygame.image.load(io.BytesIO(button_png))
-    button_surface = pygame.transform.scale(button_surface, (220, 70))  # Adjust button size
+    button_surface = pygame.transform.scale(button_surface, (210, 70))  # Adjust button size
     button_rect = button_surface.get_rect(center=(size[0] // 2, size[1] // 2 + 100))
+
+    # Render button text using heading font
+    button_text = "BEGIN"
+    button_text_surf = font.render(button_text, True, (255, 255, 255))
+    button_text_rect = button_text_surf.get_rect(center=button_surface.get_rect().center)
+    button_surface.blit(button_text_surf, button_text_rect)
 
     clock = pygame.time.Clock()
     running = True
